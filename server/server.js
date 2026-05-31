@@ -17,6 +17,20 @@ app.use(
 app.use(morgan('dev'));
 app.use(express.json());
 
+app.get('/', (req, res) => {
+	res.status(200).json({
+		message: 'Task Manager API is running',
+		status: 'ok',
+	});
+});
+
+app.get('/health', (req, res) => {
+	res.status(200).json({
+		status: 'ok',
+		time: new Date().toISOString(),
+	});
+});
+
 app.use('/api/auth', require('./routes/authRoutes'));
 app.use('/api/tasks', require('./routes/taskRoutes'));
 
