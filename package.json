@@ -4,7 +4,7 @@
   "version": "1.0.0",
   "scripts": {
     "start": "cd server && npm start",
-    "postinstall": "npm install --prefix server",
+    "postinstall": "node -e \"if (!process.env.VERCEL) require('child_process').execSync('npm install --prefix server', { stdio: 'inherit' })\"",
     "dev": "concurrently \"npm run server\" \"npm run client\"",
     "server": "cd server && npm run dev",
     "client": "cd client && npm run dev"
