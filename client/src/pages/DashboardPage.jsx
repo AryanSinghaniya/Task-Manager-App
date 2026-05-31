@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import { lazy, Suspense, useEffect, useMemo, useState } from 'react';
 import Button from '../components/common/Button';
 import Modal from '../components/common/Modal';
 import Navbar from '../components/layout/Navbar';
@@ -10,7 +10,7 @@ import { useToast } from '../hooks/useToast';
 import { fireSmallConfetti } from '../utils/confetti';
 import { getGreeting, getTaskStats, getWeeklyData, getPriorityDistribution } from '../utils/helpers';
 import StatsBar from '../components/tasks/StatsBar';
-import AnalyticsPanel from '../components/tasks/AnalyticsPanel';
+const AnalyticsPanel = lazy(() => import('../components/tasks/AnalyticsPanel'));
 
 const DashboardPage = () => {
 	const { user, logout } = useAuth();
@@ -204,7 +204,9 @@ const DashboardPage = () => {
 							</div>
 						) : null}
 
-						<AnalyticsPanel weeklyData={weeklyData} priorityData={priorityData} loading={loading} />
+						<Suspense fallback={<div className="analytics-panel"><div className="analytics-empty">Loading analytics...</div></div>}>
+							<AnalyticsPanel weeklyData={weeklyData} priorityData={priorityData} loading={loading} />
+						</Suspense>
 
 						<div style={{ display: 'flex', gap: 8, marginBottom: 12, alignItems: 'center' }}>
 							{[
